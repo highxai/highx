@@ -1,7 +1,7 @@
 {
 	"name": "highx",
 	"version": "0.1.0",
-	"description": "A typescript library",
+	"description": "The ultimate gateway for AI apps",
 	"type": "module",
 	"files": ["dist"],
 	"main": "./dist/index.cjs",

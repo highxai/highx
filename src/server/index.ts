@@ -1,14 +1,12 @@
-import ServerConfigSchema from '../validations/config'
-import config from '../server.config'
 import path from 'node:path'
+import config from '../server.config'
+import ServerConfigSchema from '../validations/config'
 
 // Interface for plugin middleware
-interface PluginMiddleware {
-	(
-		req: Request,
-		context: { config: unknown },
-	): Response | undefined | Promise<Response | undefined>
-}
+type PluginMiddleware = (
+	req: Request,
+	context: { config: unknown },
+) => Response | undefined | Promise<Response | undefined>
 
 // Simple round-robin load balancer
 class RoundRobinBalancer {

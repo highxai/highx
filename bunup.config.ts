@@ -7,6 +7,6 @@ export default defineConfig({
 	minify: true,
 	minifySyntax: true,
 	clean: true,
-	drop: ["console"],
+	drop: ['console'],
 	splitting: true,
 })

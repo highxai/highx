@@ -114,7 +114,10 @@ export const ProxyConfigSchema = z.object({
 export const PluginConfigSchema = z.object({
 	name: z.string().nonempty(), // Plugin name
 	modulePath: z.string().nonempty(), // Path to plugin module
-	config: z.record(z.string(), z.string().or(z.number()).or(z.boolean()).or(z.null())),
+	config: z.record(
+		z.string(),
+		z.string().or(z.number()).or(z.boolean()).or(z.null()),
+	),
 	enabled: z.boolean(),
 })
 
