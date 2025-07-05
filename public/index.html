@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HighX Server</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: 
+                radial-gradient(circle at 20% 20%, #00d4ff 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, #7c3aed 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, #06b6d4 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.2; }
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00d4ff, #7c3aed, #06b6d4);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            text-align: center;
+            max-width: 600px;
+            line-height: 1.4;
+        }
+
+        .highlight {
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .status {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        .links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .link {
+            text-decoration: none;
+            color: #ffffff;
+            padding: 0.8rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .link:hover::before {
+            left: 100%;
+        }
+
+        .link:hover {
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .link.primary {
+            background: linear-gradient(45deg, #00d4ff, #7c3aed);
+            border: none;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .link.primary:hover {
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .feature:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .feature h3 {
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .feature p {
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 2rem;
+            text-align: center;
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            .links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    
+    <div class="container">
+        <h1 class="logo">HighX</h1>
+        
+        <p class="tagline">
+            The <span class="highlight">lightweight</span> and <span class="highlight">performant</span> 
+            nginx alternative built for TypeScript developers
+        </p>
+        
+        <div class="status">
+            <div class="status-dot"></div>
+            Server is running and ready
+        </div>
+        
+        <div class="links">
+            <a href="#" class="link primary">Get Started</a>
+            <a href="#" class="link">Documentation</a>
+            <a href="#" class="link">GitHub</a>
+            <a href="#" class="link">Examples</a>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <h3>⚡ Lightning Fast</h3>
+                <p>Built for speed with modern JavaScript engines and optimized routing</p>
+            </div>
+            
+            <div class="feature">
+                <h3>🔧 TypeScript Native</h3>
+                <p>First-class TypeScript support with full type safety and IntelliSense</p>
+            </div>
+            
+            <div class="feature">
+                <h3>🪶 Minimal Footprint</h3>
+                <p>Lightweight architecture without sacrificing functionality or performance</p>
+            </div>
+            
+            <div class="feature">
+                <h3>🔄 Hot Reload</h3>
+                <p>Development-friendly with instant reload and seamless debugging</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Powered by HighX • Built with ❤️ for developers</p>
+    </div>
+
+    <script>
+        // Add some subtle interactivity
+        document.addEventListener('mousemove', (e) => {
+            const cursor = document.createElement('div');
+            cursor.style.position = 'fixed';
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursor.style.width = '4px';
+            cursor.style.height = '4px';
+            cursor.style.background = 'rgba(0, 212, 255, 0.6)';
+            cursor.style.borderRadius = '50%';
+            cursor.style.pointerEvents = 'none';
+            cursor.style.zIndex = '9999';
+            cursor.style.transition = 'opacity 0.3s ease';
+            
+            document.body.appendChild(cursor);
+            
+            setTimeout(() => {
+                cursor.style.opacity = '0';
+                setTimeout(() => {
+                    if (cursor.parentNode) {
+                        cursor.parentNode.removeChild(cursor);
+                    }
+                }, 300);
+            }, 100);
+        });
+
+        // Console message for developers
+        console.log('%c🚀 HighX Server', 'color: #00d4ff; font-size: 20px; font-weight: bold;');
+        console.log('%cWelcome to HighX - the modern nginx alternative!', 'color: #7c3aed; font-size: 14px;');
+    </script>
+</body>
+</html>
