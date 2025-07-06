@@ -6,7 +6,7 @@ import { loadPlugins } from './utils/loadPlugins'
 import { RoundRobinBalancer } from './utils/roundRobinBalancer'
 import { serveStaticFallback } from './utils/serveStaticFallback'
 
-export async function startServer() {
+export async function startServer(): Promise<void> {
 	const validatedConfig = validateServerConfig()
 	const plugins: PluginMiddleware[] = await loadPlugins(
 		validatedConfig.plugins || [],
