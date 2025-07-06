@@ -1,6 +1,6 @@
 import { z } from 'zod/v4'
 
-enum CompressionEnum {
+export enum CompressionEnum {
 	default = -1,
 	l1 = 1,
 	l2 = 2,
@@ -122,15 +122,10 @@ export const PluginConfigSchema = z.object({
 })
 
 // Zod schema for the entire server configuration
-const ServerConfigSchema = z.object({
+export const ServerConfigSchema = z.object({
 	http: HttpConfigSchema,
 	static: StaticConfigSchema,
 	routes: z.array(RouteSchema).min(1), // At least one route
 	proxy: z.array(ProxyConfigSchema).optional(),
 	plugins: z.array(PluginConfigSchema).optional(),
 })
-
-// Export the schema for use in validation
-export default ServerConfigSchema
-
-export type ServerConfig = z.infer<typeof ServerConfigSchema>

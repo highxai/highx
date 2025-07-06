@@ -1,7 +1,4 @@
-import type z from 'zod/v4'
-import type ServerConfigSchema from './validations/config'
-
-type ServerConfig = z.infer<typeof ServerConfigSchema>
+import type { ServerConfig } from './types'
 
 // Example configuration for the server
 const config: ServerConfig = {
