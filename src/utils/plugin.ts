@@ -1,5 +1,5 @@
 import path from 'node:path'
-import type { PluginConfig, PluginMiddleware } from '../types'
+import type { HandlerContext, PluginConfig, PluginMiddleware } from '../types'
 
 /**
  * Loads enabled plugins and returns an array of plugin middleware.
@@ -18,7 +18,7 @@ export async function loadPlugins(
 			const pluginModule = await import(pluginPath)
 			const middleware = pluginModule.default as PluginMiddleware['call']
 			plugins.push({
-				name: plugin.name,
+				config: plugin,
 				call: (req, context) => middleware(req, context),
 			})
 			console.log(`Loaded plugin: ${plugin.name} from: ${pluginPath}`)
@@ -28,4 +28,29 @@ export async function loadPlugins(
 	}
 
 	return plugins
+}
+
+export async function runPlugins(plugins: PluginMiddleware[], req: Request) {
+	const context: HandlerContext = {
+		name: '',
+		modulePath: '',
+		config: undefined,
+		pluginData: {}, // Initialize pluginData
+	}
+
+	for (const [index, plugin] of plugins.entries()) {
+		const response = await plugin.call(req, {
+			name: plugin.config.name,
+			modulePath: plugin.config.modulePath,
+			config: plugin.config,
+			pluginData: index === 0 ? { firstMember: true } : context.pluginData,
+		})
+		if (response instanceof Response) return response
+		if (response !== undefined) {
+			// Store plugin data with a key (e.g., plugin index or name)
+			context.pluginData[`plugin_${plugin.config.name}`] = response
+		}
+	}
+
+	return context
 }

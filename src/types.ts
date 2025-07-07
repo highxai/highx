@@ -1,6 +1,5 @@
 import type z from 'zod/v4'
 import type {
-	AiConfigSchema,
 	PluginConfigSchema,
 	ProxyConfigSchema,
 	ServerConfigSchema,
@@ -10,7 +9,7 @@ import type {
  * Plugin middleware type
  */
 export type PluginMiddleware = {
-	name: string
+	config: PluginConfig
 	call: (
 		req: Request,
 		context: HandlerContext,
@@ -27,7 +26,7 @@ export type PluginMiddleware = {
 export interface HandlerContext {
 	name: string
 	modulePath: string
-	config?: PluginConfig | AiConfig
+	config?: PluginConfig
 	pluginData: Record<string, unknown>
 }
 
@@ -72,8 +71,6 @@ export interface AiGraphNode {
 /**
  * AI configuration
  */
-export type AiConfig = z.infer<typeof AiConfigSchema>
-
 export type ProxyConfig = z.infer<typeof ProxyConfigSchema>
 export type ServerConfig = z.infer<typeof ServerConfigSchema>
 export type PluginConfig = z.infer<typeof PluginConfigSchema>

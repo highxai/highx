@@ -1,9 +1,29 @@
 import { z } from 'zod/v4'
-import type { AiConfig, AiContext, PluginMiddleware } from '../types'
+import type { AiContext, PluginMiddleware } from '../types'
 
 interface ContextStore {
 	getContext(id: string): Promise<AiContext | null>
 	saveContext(context: AiContext): Promise<void>
+}
+
+interface Config {
+	provider: string
+	apiKey: string
+	model: string
+	contextStore: {
+		type: 'memory'
+		maxContexts: 100
+		filePath: './data/ai_contexts.json'
+	}
+	rag: {
+		enabled: true
+		indexPath: './data/rag_index.json'
+		maxDocs: 10
+	}
+	graph: {
+		enabled: true
+		workflowPath: './data/workflows'
+	}
 }
 
 class MemoryContextStore implements ContextStore {
@@ -58,8 +78,7 @@ async function executeGraph(
 }
 
 const aiPlugin: PluginMiddleware['call'] = async (req, context) => {
-	console.log('from plugin', context)
-	const config = context.config as AiConfig
+	const config = context.config?.config as unknown as Config
 	if (!config || !req.url.includes('/api/ai')) return undefined // Go for the next plugin
 
 	const url = new URL(req.url)
