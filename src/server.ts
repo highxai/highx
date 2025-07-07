@@ -1,4 +1,9 @@
-import type { AiConfig, HandlerContext, PluginConfig, PluginMiddleware } from './types'
+import type {
+	AiConfig,
+	HandlerContext,
+	PluginConfig,
+	PluginMiddleware,
+} from './types'
 import { validateServerConfig } from './utils/config'
 import { handleRoutes } from './utils/handleRoutes'
 import { runHealthChecks } from './utils/healthCheck'
@@ -43,7 +48,9 @@ export async function startServer(): Promise<void> {
 				const response = await plugin.call(req, {
 					name: validatedConfig.plugins![index].name,
 					modulePath: validatedConfig.plugins![index].modulePath,
-					config: validatedConfig.plugins![index].config as PluginConfig | AiConfig,
+					config: validatedConfig.plugins![index].config as
+						| PluginConfig
+						| AiConfig,
 					pluginData: index === 0 ? { firstMember: true } : context.pluginData,
 				})
 				if (response instanceof Response) return response

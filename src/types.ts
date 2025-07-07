@@ -25,8 +25,8 @@ export type PluginMiddleware = {
  * Context passed to plugins and route handlers
  */
 export interface HandlerContext {
-	name: string;
-	modulePath: string;
+	name: string
+	modulePath: string
 	config?: PluginConfig | AiConfig
 	pluginData: Record<string, unknown>
 }

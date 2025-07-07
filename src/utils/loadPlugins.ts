@@ -16,7 +16,7 @@ export async function loadPlugins(
 		try {
 			const pluginPath = path.resolve(plugin.modulePath)
 			const pluginModule = await import(pluginPath)
-			const middleware = pluginModule.default as PluginMiddleware["call"]
+			const middleware = pluginModule.default as PluginMiddleware['call']
 			plugins.push({
 				name: plugin.name,
 				call: (req, context) => middleware(req, context),

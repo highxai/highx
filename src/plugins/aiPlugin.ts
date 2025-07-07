@@ -1,10 +1,5 @@
 import { z } from 'zod/v4'
-import type {
-	AiConfig,
-	AiContext,
-	AiGraphNode,
-	PluginMiddleware,
-} from '../types'
+import type { AiConfig, AiContext, PluginMiddleware } from '../types'
 
 interface ContextStore {
 	getContext(id: string): Promise<AiContext | null>
@@ -53,14 +48,17 @@ async function retrieveDocs(
 	return [`Doc 1: ${query}`, `Doc 2: ${query}`].slice(0, maxDocs)
 }
 
-async function executeGraph(workflowPath: string, input: unknown): Promise<unknown> {
+async function executeGraph(
+	workflowPath: string,
+	input: unknown,
+): Promise<unknown> {
 	// Placeholder for graph workflow execution
 	// In a real implementation, this would load and execute a graph of nodes
 	return { result: `Mock graph execution with input: ${JSON.stringify(input)}` }
 }
 
-const aiPlugin: PluginMiddleware["call"] = async (req, context) => {
-    console.log('from plugin', context)
+const aiPlugin: PluginMiddleware['call'] = async (req, context) => {
+	console.log('from plugin', context)
 	const config = context.config as AiConfig
 	if (!config || !req.url.includes('/api/ai')) return undefined // Go for the next plugin
 
