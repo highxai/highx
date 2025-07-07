@@ -123,7 +123,7 @@ const config: ServerConfig = {
 		{
 			name: 'ai',
 			modulePath: './src/plugins/aiPlugin.ts',
-			hookOn: 'start',
+			hookOn: ['invoke', 'start'],
 			config: {
 				provider: 'xai', // e.g., 'xai', 'openai', 'custom'
 				apiKey: process.env.AI_API_KEY || 'your-api-key',

@@ -1,5 +1,28 @@
 import { z } from 'zod/v4'
-import type { AiContext, PluginMiddleware } from '../types'
+import type { PluginMiddleware } from '../types'
+
+/**
+ * AI context for storing conversation or RAG data
+ */
+export interface AiContext {
+	id: string
+	userId?: string
+	data: unknown
+	timestamp: number
+}
+
+/**
+ * AI graph workflow node
+ */
+export interface AiGraphNode {
+	id: string
+	type: 'model' | 'retrieval' | 'output'
+	config: {
+		model?: string
+		prompt?: string
+		retrievalQuery?: string
+	}
+}
 
 interface ContextStore {
 	getContext(id: string): Promise<AiContext | null>
@@ -79,7 +102,7 @@ async function executeGraph(
 
 const aiPlugin: PluginMiddleware['call'] = async (req, context) => {
 	const config = context.config?.config as unknown as Config
-	if (!config || !req.url.includes('/api/ai')) return undefined // Go for the next plugin
+	if (!config || !req?.url.includes('/api/ai')) return undefined // Go for the next plugin
 
 	const url = new URL(req.url)
 	const path = url.pathname

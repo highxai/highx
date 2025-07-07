@@ -125,7 +125,7 @@ export const PluginProvidedConfigSchema = z.record(
 export const PluginConfigSchema = z.object({
 	name: z.string().nonempty(), // Plugin name
 	modulePath: z.string().nonempty(), // Path to plugin module
-	hookOn: z.enum(['start', 'invoke', 'end']), // Plugin name
+	hookOn: z.enum(['start', 'invoke', 'end']).array(), // Plugin name
 	config: PluginProvidedConfigSchema,
 	enabled: z.boolean(),
 })

@@ -12,6 +12,18 @@ export async function startServer(): Promise<void> {
 		validatedConfig.plugins || [],
 	)
 
+	const startupPlugins: PluginMiddleware[] = plugins.filter((p) =>
+		p.config.hookOn.includes('start'),
+	)
+	const invokePlugins: PluginMiddleware[] = plugins.filter((p) =>
+		p.config.hookOn.includes('invoke'),
+	)
+	const endPlugins: PluginMiddleware[] = plugins.filter((p) =>
+		p.config.hookOn.includes('end'),
+	)
+
+	await runPlugins(startupPlugins, null)
+
 	const balancers = new Map<string, RoundRobinBalancer>()
 	if (validatedConfig.proxy) {
 		for (const proxyConfig of validatedConfig.proxy) {
@@ -32,7 +44,7 @@ export async function startServer(): Promise<void> {
 				}
 			: undefined,
 		async fetch(req: Request): Promise<Response> {
-			const context = await runPlugins(plugins, req)
+			const context = await runPlugins(invokePlugins, req)
 			if (context instanceof Response) {
 				return context
 			}
@@ -44,6 +56,8 @@ export async function startServer(): Promise<void> {
 				balancers,
 			)
 			if (routeResponse) return routeResponse
+
+			await runPlugins(endPlugins, null)
 
 			const staticResponse = await serveStaticFallback(req, validatedConfig)
 			if (staticResponse) return staticResponse

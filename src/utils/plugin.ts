@@ -30,7 +30,10 @@ export async function loadPlugins(
 	return plugins
 }
 
-export async function runPlugins(plugins: PluginMiddleware[], req: Request) {
+export async function runPlugins(
+	plugins: PluginMiddleware[],
+	req: Request | null,
+) {
 	const context: HandlerContext = {
 		name: '',
 		modulePath: '',
@@ -39,6 +42,8 @@ export async function runPlugins(plugins: PluginMiddleware[], req: Request) {
 	}
 
 	for (const [index, plugin] of plugins.entries()) {
+		console.log(`[plugin invoke]: ${plugin.config.name}`)
+
 		const response = await plugin.call(req, {
 			name: plugin.config.name,
 			modulePath: plugin.config.modulePath,

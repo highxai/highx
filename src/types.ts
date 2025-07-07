@@ -11,7 +11,7 @@ import type {
 export type PluginMiddleware = {
 	config: PluginConfig
 	call: (
-		req: Request,
+		req: Request | null,
 		context: HandlerContext,
 	) =>
 		| Response
@@ -42,29 +42,6 @@ export interface ProxyRouteConfig {
 		enabled: boolean
 		path: string
 		interval: number
-	}
-}
-
-/**
- * AI context for storing conversation or RAG data
- */
-export interface AiContext {
-	id: string
-	userId?: string
-	data: unknown
-	timestamp: number
-}
-
-/**
- * AI graph workflow node
- */
-export interface AiGraphNode {
-	id: string
-	type: 'model' | 'retrieval' | 'output'
-	config: {
-		model?: string
-		prompt?: string
-		retrievalQuery?: string
 	}
 }
 
