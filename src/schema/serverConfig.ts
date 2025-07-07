@@ -111,13 +111,21 @@ export const ProxyConfigSchema = z.object({
 })
 
 // Zod schema for plugin configuration
+export const PluginProvidedConfigDataTypesSchema = z
+	.string()
+	.or(z.number())
+	.or(z.boolean())
+	.or(z.null())
+export const PluginProvidedConfigSchema = z.record(
+	z.string(),
+	PluginProvidedConfigDataTypesSchema.or(
+		z.record(z.string(), PluginProvidedConfigDataTypesSchema),
+	),
+)
 export const PluginConfigSchema = z.object({
 	name: z.string().nonempty(), // Plugin name
 	modulePath: z.string().nonempty(), // Path to plugin module
-	config: z.record(
-		z.string(),
-		z.string().or(z.number()).or(z.boolean()).or(z.null()),
-	),
+	config: PluginProvidedConfigSchema,
 	enabled: z.boolean(),
 })
 
@@ -128,4 +136,27 @@ export const ServerConfigSchema = z.object({
 	routes: z.array(RouteSchema).min(1), // At least one route
 	proxy: z.array(ProxyConfigSchema).optional(),
 	plugins: z.array(PluginConfigSchema).optional(),
+})
+
+export const AiConfigSchema = z.object({
+	provider: z.enum(['xai', 'openai', 'custom']),
+	apiKey: z.string(),
+	model: z.string(),
+
+	contextStore: z.object({
+		type: z.enum(['memory', 'file', 'redis']),
+		maxContexts: z.number().int().min(1),
+		filePath: z.string().optional(),
+	}),
+
+	rag: z.object({
+		enabled: z.boolean(),
+		indexPath: z.string(),
+		maxDocs: z.number().int().min(1),
+	}),
+
+	graph: z.object({
+		enabled: z.boolean(),
+		workflowPath: z.string(),
+	}),
 })

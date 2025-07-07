@@ -101,26 +101,50 @@ const config: ServerConfig = {
 	//     },
 	//   ],
 
-	// plugins: [
-	// 	{
-	// 		name: 'rate-limit',
-	// 		modulePath: './plugins/rateLimitPlugin.ts',
-	// 		config: {
-	// 			requestsPerSecond: 100,
-	// 			burst: 200,
-	// 		},
-	// 		enabled: true,
-	// 	},
-	// 	{
-	// 		name: 'auth',
-	// 		modulePath: './plugins/authPlugin.ts',
-	// 		config: {
-	// 			jwtSecret: 'your-secret-key',
-	// 			authHeader: 'Authorization',
-	// 		},
-	// 		enabled: true,
-	// 	},
-	// ],
+	plugins: [
+		// {
+		// 	name: 'rate-limit',
+		// 	modulePath: './plugins/rateLimitPlugin.ts',
+		// 	config: {
+		// 		requestsPerSecond: 100,
+		// 		burst: 200,
+		// 	},
+		// 	enabled: true,
+		// },
+		// {
+		// 	name: 'auth',
+		// 	modulePath: './plugins/authPlugin.ts',
+		// 	config: {
+		// 		jwtSecret: 'your-secret-key',
+		// 		authHeader: 'Authorization',
+		// 	},
+		// 	enabled: true,
+		// },
+		{
+			name: 'ai',
+			modulePath: './src/plugins/aiPlugin.ts',
+			config: {
+				provider: 'xai', // e.g., 'xai', 'openai', 'custom'
+				apiKey: process.env.AI_API_KEY || 'your-api-key',
+				model: 'grok-3', // Default model
+				contextStore: {
+					type: 'memory', // Options: 'memory', 'file', 'redis'
+					maxContexts: 100, // Max stored contexts
+					filePath: './data/ai_contexts.json', // For file-based store
+				},
+				rag: {
+					enabled: true,
+					indexPath: './data/rag_index.json', // Path to RAG index
+					maxDocs: 10, // Max documents to retrieve
+				},
+				graph: {
+					enabled: true,
+					workflowPath: './data/workflows', // Directory for graph workflows
+				},
+			},
+			enabled: true,
+		},
+	],
 }
 
 // Export the configuration

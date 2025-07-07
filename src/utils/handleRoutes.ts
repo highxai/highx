@@ -1,5 +1,5 @@
 import path from 'node:path'
-import type { ServerConfig } from '../types'
+import type { HandlerContext, ServerConfig } from '../types'
 import type { RoundRobinBalancer } from './roundRobinBalancer'
 
 /**
@@ -12,6 +12,7 @@ import type { RoundRobinBalancer } from './roundRobinBalancer'
 export async function handleRoutes(
 	req: Request,
 	config: ServerConfig,
+	context: HandlerContext,
 	balancers: Map<string, RoundRobinBalancer>,
 ): Promise<Response | undefined> {
 	const url = new URL(req.url)

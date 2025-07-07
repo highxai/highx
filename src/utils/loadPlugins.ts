@@ -1,3 +1,4 @@
+import path from 'node:path'
 import type { PluginConfig, PluginMiddleware } from '../types'
 
 /**
@@ -13,10 +14,14 @@ export async function loadPlugins(
 	for (const plugin of pluginsConfig) {
 		if (!plugin.enabled) continue
 		try {
-			const pluginModule = await import(plugin.modulePath)
-			const middleware = pluginModule.default as PluginMiddleware
-			plugins.push((req, context) => middleware(req, { config: plugin.config }))
-			console.log(`Loaded plugin: ${plugin.name}`)
+			const pluginPath = path.resolve(plugin.modulePath)
+			const pluginModule = await import(pluginPath)
+			const middleware = pluginModule.default as PluginMiddleware["call"]
+			plugins.push({
+				name: plugin.name,
+				call: (req, context) => middleware(req, context),
+			})
+			console.log(`Loaded plugin: ${plugin.name} from: ${pluginPath}`)
 		} catch (err) {
 			console.error(`Failed to load plugin ${plugin.name}:`, err)
 		}

@@ -1,4 +1,4 @@
-import type { PluginMiddleware } from './types'
+import type { AiConfig, HandlerContext, PluginConfig, PluginMiddleware } from './types'
 import { validateServerConfig } from './utils/config'
 import { handleRoutes } from './utils/handleRoutes'
 import { runHealthChecks } from './utils/healthCheck'
@@ -32,12 +32,34 @@ export async function startServer(): Promise<void> {
 				}
 			: undefined,
 		async fetch(req: Request): Promise<Response> {
-			for (const plugin of plugins) {
-				const response = await plugin(req, { config: validatedConfig })
-				if (response instanceof Response) return response
+			const context: HandlerContext = {
+				name: '',
+				modulePath: '',
+				config: undefined,
+				pluginData: {}, // Initialize pluginData
 			}
 
-			const routeResponse = await handleRoutes(req, validatedConfig, balancers)
+			for (const [index, plugin] of plugins.entries()) {
+				const response = await plugin.call(req, {
+					name: validatedConfig.plugins![index].name,
+					modulePath: validatedConfig.plugins![index].modulePath,
+					config: validatedConfig.plugins![index].config as PluginConfig | AiConfig,
+					pluginData: index === 0 ? { firstMember: true } : context.pluginData,
+				})
+				if (response instanceof Response) return response
+				if (response !== undefined) {
+					// Store plugin data with a key (e.g., plugin index or name)
+					context.pluginData[`plugin_${validatedConfig.plugins![index].name}`] =
+						response
+				}
+			}
+
+			const routeResponse = await handleRoutes(
+				req,
+				validatedConfig,
+				context,
+				balancers,
+			)
 			if (routeResponse) return routeResponse
 
 			const staticResponse = await serveStaticFallback(req, validatedConfig)
