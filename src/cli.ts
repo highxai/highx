@@ -1,8 +1,8 @@
+import path from 'node:path'
+import packageJson from '../package.json'
 import { startServer } from './server'
 import type { ServerConfig } from './types'
 import { loadHighXConfig } from './utils/config'
-import packageJson from '../package.json'
-import path from 'node:path'
 
 interface Command {
 	name: string
