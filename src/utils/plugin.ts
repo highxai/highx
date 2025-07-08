@@ -1,4 +1,3 @@
-import path from 'node:path'
 import type { HandlerContext, PluginConfig, PluginMiddleware } from '../types'
 
 /**
@@ -14,16 +13,19 @@ export async function loadPlugins(
 	for (const plugin of pluginsConfig) {
 		if (!plugin.enabled) continue
 		try {
-			const pluginPath = path.resolve(plugin.modulePath)
+			const pluginPath = plugin.modulePath
 			const pluginModule = await import(pluginPath)
 			const middleware = pluginModule.default as PluginMiddleware['call']
 			plugins.push({
 				config: plugin,
 				call: (req, context) => middleware(req, context),
 			})
-			console.log(`Loaded plugin: ${plugin.name} from: ${pluginPath}`)
+			console.log(`[plugin load]: ${plugin.name} from: ${pluginPath}`)
 		} catch (err) {
-			console.error(`Failed to load plugin ${plugin.name}:`, err)
+			console.error(
+				`[plugin load.error]: Failed to load plugin ${plugin.name}:`,
+				err,
+			)
 		}
 	}
 

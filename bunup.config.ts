@@ -2,11 +2,10 @@ import { defineConfig } from 'bunup'
 
 export default defineConfig({
 	entry: ['src/index.ts', 'src/cli.ts'],
-	format: ['esm', 'cjs'],
+	format: ['esm'],
 	dts: true,
 	minify: true,
 	minifySyntax: true,
 	clean: true,
-	drop: ['console'],
 	splitting: true,
 })

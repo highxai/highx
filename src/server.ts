@@ -1,16 +1,12 @@
-import type { PluginMiddleware } from './types'
-import { validateServerConfig } from './utils/config'
+import type { PluginMiddleware, ServerConfig } from './types'
 import { handleRoutes } from './utils/handleRoutes'
 import { runHealthChecks } from './utils/healthCheck'
 import { loadPlugins, runPlugins } from './utils/plugin'
 import { RoundRobinBalancer } from './utils/roundRobinBalancer'
 import { serveStaticFallback } from './utils/serveStaticFallback'
 
-export async function startServer(): Promise<void> {
-	const validatedConfig = validateServerConfig()
-	const plugins: PluginMiddleware[] = await loadPlugins(
-		validatedConfig.plugins || [],
-	)
+export async function startServer(config: ServerConfig): Promise<void> {
+	const plugins: PluginMiddleware[] = await loadPlugins(config.plugins || [])
 
 	const startupPlugins: PluginMiddleware[] = plugins.filter((p) =>
 		p.config.hookOn.includes('start'),
@@ -25,8 +21,8 @@ export async function startServer(): Promise<void> {
 	await runPlugins(startupPlugins, null)
 
 	const balancers = new Map<string, RoundRobinBalancer>()
-	if (validatedConfig.proxy) {
-		for (const proxyConfig of validatedConfig.proxy) {
+	if (config.proxy) {
+		for (const proxyConfig of config.proxy) {
 			balancers.set(
 				proxyConfig.name,
 				new RoundRobinBalancer(proxyConfig.upstream.servers),
@@ -35,12 +31,12 @@ export async function startServer(): Promise<void> {
 	}
 
 	Bun.serve({
-		port: validatedConfig.http.port,
-		hostname: validatedConfig.http.host,
-		tls: validatedConfig.http.ssl?.enabled
+		port: config.http.port,
+		hostname: config.http.host,
+		tls: config.http.ssl?.enabled
 			? {
-					cert: Bun.file(validatedConfig.http.ssl.certPath),
-					key: Bun.file(validatedConfig.http.ssl.keyPath),
+					cert: Bun.file(config.http.ssl.certPath),
+					key: Bun.file(config.http.ssl.keyPath),
 				}
 			: undefined,
 		async fetch(req: Request): Promise<Response> {
@@ -49,17 +45,12 @@ export async function startServer(): Promise<void> {
 				return context
 			}
 
-			const routeResponse = await handleRoutes(
-				req,
-				validatedConfig,
-				context,
-				balancers,
-			)
+			const routeResponse = await handleRoutes(req, config, context, balancers)
 			if (routeResponse) return routeResponse
 
 			await runPlugins(endPlugins, null)
 
-			const staticResponse = await serveStaticFallback(req, validatedConfig)
+			const staticResponse = await serveStaticFallback(req, config)
 			if (staticResponse) return staticResponse
 
 			return new Response('Not Found', { status: 404 })
@@ -69,9 +60,7 @@ export async function startServer(): Promise<void> {
 		},
 	})
 
-	console.log(
-		`HighX running on ${validatedConfig.http.host}:${validatedConfig.http.port}`,
-	)
+	console.log(`--HighX running on ${config.http.host}:${config.http.port}--`)
 
-	runHealthChecks(validatedConfig.proxy || [], balancers)
+	runHealthChecks(config.proxy || [], balancers)
 }

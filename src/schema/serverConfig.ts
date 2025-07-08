@@ -1,17 +1,5 @@
 import { z } from 'zod/v4'
-
-export enum CompressionEnum {
-	default = -1,
-	l1 = 1,
-	l2 = 2,
-	l3 = 3,
-	l4 = 4,
-	l5 = 5,
-	l6 = 6,
-	l7 = 7,
-	l8 = 8,
-	l9 = 9,
-}
+import { CompressionEnum } from '../types'
 
 // Zod schema for HTTP server settings
 export const HttpConfigSchema = z.object({
@@ -137,27 +125,4 @@ export const ServerConfigSchema = z.object({
 	routes: z.array(RouteSchema).min(1), // At least one route
 	proxy: z.array(ProxyConfigSchema).optional(),
 	plugins: z.array(PluginConfigSchema).optional(),
-})
-
-export const AiConfigSchema = z.object({
-	provider: z.enum(['xai', 'openai', 'custom']),
-	apiKey: z.string(),
-	model: z.string(),
-
-	contextStore: z.object({
-		type: z.enum(['memory', 'file', 'redis']),
-		maxContexts: z.number().int().min(1),
-		filePath: z.string().optional(),
-	}),
-
-	rag: z.object({
-		enabled: z.boolean(),
-		indexPath: z.string(),
-		maxDocs: z.number().int().min(1),
-	}),
-
-	graph: z.object({
-		enabled: z.boolean(),
-		workflowPath: z.string(),
-	}),
 })
