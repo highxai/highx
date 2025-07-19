@@ -18,7 +18,8 @@
 		}
 	},
 	"scripts": {
-		"build": "bun run build.ts",
+		"build": "sh ./build.sh",
+		"project:build": "bunup",
 		"dev": "bunup --watch",
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
