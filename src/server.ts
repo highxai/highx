@@ -55,7 +55,7 @@ export async function startServer(config: ServerConfig): Promise<void> {
 
 			return new Response('Not Found', { status: 404 })
 		},
-		error(err) {
+		error(err): Response {
 			return new Response(`Server Error: ${err.message}`, { status: 500 })
 		},
 	})

@@ -35,7 +35,7 @@ export async function loadPlugins(
 export async function runPlugins(
 	plugins: PluginMiddleware[],
 	req: Request | null,
-) {
+): Promise<Response | HandlerContext> {
 	const context: HandlerContext = {
 		name: '',
 		modulePath: '',

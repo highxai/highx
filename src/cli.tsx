@@ -80,7 +80,7 @@ const commands: Command[] = [
 	},
 ]
 
-export const HighXLogo = ({ version }: { version?: boolean }) => {
+export const HighXLogo = ({ version }: { version?: boolean }): ReactNode => {
 	const gradientText = gradient(['#60a5fa', '#a78bfa'])('HighX')
 	return (
 		<>
@@ -90,10 +90,10 @@ export const HighXLogo = ({ version }: { version?: boolean }) => {
 	)
 }
 
-const SelectableCommandList = () => {
+const SelectableCommandList = (): ReactNode => {
 	const { exit } = useApp()
 
-	const handleSelect = (item: Command) => {
+	const handleSelect = (item: Command): void => {
 		render(<InlineCommands command={item.name} args={[]} />)
 		exit()
 	}
@@ -105,11 +105,14 @@ const SelectableCommandList = () => {
 	}))
 
 	return (
-		<SelectInput items={items} onSelect={(item) => handleSelect(item.value)} />
+		<SelectInput
+			items={items}
+			onSelect={(item): void => handleSelect(item.value)}
+		/>
 	)
 }
 
-const Help = () => {
+const Help = (): ReactNode => {
 	const { exit } = useApp()
 	useInput((input) => {
 		if (input === 'q') exit()
@@ -153,7 +156,9 @@ const Help = () => {
 	)
 }
 
-const getTemplate = async (name: 'package.json' | 'highx.config.ts') => {
+const getTemplate = async (
+	name: 'package.json' | 'highx.config.ts',
+): Promise<string> => {
 	const template = Bun.file(
 		path.resolve(import.meta.dir, `./templates/${name}.txt`),
 	)
@@ -162,12 +167,12 @@ const getTemplate = async (name: 'package.json' | 'highx.config.ts') => {
 	return content.replaceAll('<PROJECT_NAME>', name)
 }
 
-const InitProject = ({ name }: { name: string }) => {
+const InitProject = ({ name }: { name: string }): ReactNode => {
 	const [loading, setLoading] = useState(true)
 	const [gitError, setGitError] = useState<string | null>(null)
 
 	useEffect(() => {
-		const init = async () => {
+		const init = async (): Promise<void> => {
 			const [confTemplate, packageTemplate] = await Promise.all([
 				await getTemplate('highx.config.ts'),
 				await getTemplate('package.json'),
@@ -289,7 +294,7 @@ const InlineCommands = ({
 }: {
 	command: string
 	args: string[]
-}) => {
+}): ReactNode => {
 	const handler = commandHandlers[command]
 
 	useEffect(() => {
@@ -308,13 +313,15 @@ const InlineCommands = ({
 	return <Box padding={1}>{handler({ args })}</Box>
 }
 
-const convertToCommands = (cmds: string[]) => {
+const convertToCommands = (
+	cmds: string[],
+): { command: string; args: string[] } | null => {
 	if (cmds.length === 0) return null
 	const [commandName, ...args] = cmds
 	return { command: commandName, args }
 }
 
-const App = () => {
+const App = (): ReactNode => {
 	const { values, positionals } = parseArgs({
 		args: Bun.argv.slice(2),
 		tokens: true,
