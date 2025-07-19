@@ -11,7 +11,7 @@ Thank you for your interest in contributing to our project! This guide will help
 ### Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/abura1han/highx.git`
+2. Clone your fork: `git clone https://github.com/highxai/highx.git`
 3. Navigate to the project directory: `cd highx`
 4. Install dependencies: `bun install`
 5. Start development: `bun run dev`
@@ -53,6 +53,6 @@ Please be respectful and constructive in all interactions within our community.
 
 ## Questions?
 
-If you have any questions, please [open an issue](https://github.com/abura1han/highx/issues/new) for discussion.
+If you have any questions, please [open an issue](https://github.com/highxai/highx/issues/new) for discussion.
 
 Thank you for contributing to highx!

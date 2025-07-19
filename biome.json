@@ -10,6 +10,9 @@
 			},
 			"suspicious": {
 				"noConfusingVoidType": "off"
+			},
+			"nursery": {
+				"useExplicitType": "off"
 			}
 		}
 	},

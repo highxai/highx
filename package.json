@@ -47,7 +47,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/abura1han/highx.git"
+		"url": "git+https://github.com/highxai/highx.git"
 	},
 	"peerDependencies": {
 		"typescript": ">=4.5.0"
@@ -57,11 +57,11 @@
 			"optional": true
 		}
 	},
-	"homepage": "https://github.com/abura1han/highx#readme",
+	"homepage": "https://highx.dev",
 	"bugs": {
-		"url": "https://github.com/abura1han/highx/issues"
+		"url": "https://github.com/highxai/highx/issues"
 	},
-	"license": "MIT",
+	"license": "Apache-2.0",
 	"dependencies": {
 		"gradient-string": "^3.0.0",
 		"ink": "^6.0.1",
