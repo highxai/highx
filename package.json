@@ -1,6 +1,6 @@
 {
 	"name": "highx",
-	"version": "0.1.9",
+	"version": "0.1.10",
 	"description": "The ultimate gateway for AI apps",
 	"type": "module",
 	"files": ["dist"],
