@@ -18,7 +18,8 @@ export async function loadPlugins(
 			const middleware = pluginModule.default as PluginMiddleware['call']
 			plugins.push({
 				config: plugin,
-				call: (req, context) => middleware(req, context),
+				call: (req: Request | null, context: HandlerContext) =>
+					middleware(req, context),
 			})
 			console.log(`[plugin load]: ${plugin.name} from: ${pluginPath}`)
 		} catch (err) {
