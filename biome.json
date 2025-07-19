@@ -12,7 +12,7 @@
 				"noConfusingVoidType": "off"
 			},
 			"nursery": {
-				"useExplicitType": "off"
+				"useExplicitType": "info"
 			}
 		}
 	},

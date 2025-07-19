@@ -9,6 +9,7 @@
 		"skipLibCheck": true,
 		"declaration": true,
 		"isolatedDeclarations": false,
+		"noImplicitReturns": false,
 		"outDir": "./dist",
 		"rootDir": "./src"
 	},
