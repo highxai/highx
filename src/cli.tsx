@@ -1,7 +1,7 @@
 import path from 'node:path'
 import { parseArgs } from 'node:util'
 import gradient from 'gradient-string'
-import { Box, Text, render, useApp, useInput } from 'ink'
+import { Box, render, Text, useApp, useInput } from 'ink'
 import SelectInput from 'ink-select-input'
 import React, { type ReactNode, useEffect, useState } from 'react'
 import packageJson from '../package.json'
@@ -69,11 +69,6 @@ const commands: Command[] = [
 		description:
 			'Displays detailed info about the server, plugins, and configuration',
 	},
-	{
-		name: 'export',
-		description: 'Exports the current configuration to a file',
-	},
-	{ name: 'import', description: 'Imports a configuration from a file' },
 	{
 		name: 'migrate',
 		description: 'Migrates the server to a new version or configuration format',

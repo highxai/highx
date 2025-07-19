@@ -1,3 +1,4 @@
+import type { z } from 'zod/v4'
 import { ServerConfigSchema } from '../schema/serverConfig'
 import type { ServerConfig } from '../types'
 
@@ -11,7 +12,9 @@ import type { ServerConfig } from '../types'
  * @example
  * const config = loadHighXConfig('./config/server.config.ts');
  */
-export const loadHighXConfig = async (filePath: string) => {
+export const loadHighXConfig = async (
+	filePath: string,
+): Promise<ServerConfig> => {
 	if (!filePath) {
 		throw new Error('Configuration file path is required')
 	}
@@ -35,7 +38,9 @@ export const loadHighXConfig = async (filePath: string) => {
  * Validates and returns the typed configuration object.
  * Throws and exits if validation fails.
  */
-export const validateServerConfig = (config: ServerConfig) => {
+export const validateServerConfig = (
+	config: ServerConfig,
+): z.infer<typeof ServerConfigSchema> => {
 	const result = ServerConfigSchema.safeParse(config)
 	if (!result.success) {
 		console.error('Configuration validation failed:', result.error.format())
