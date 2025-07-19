@@ -1,7 +1,7 @@
 import { Glob } from 'bun'
 
 await Bun.spawn(['bun', 'run', 'test'])
-const build = await Bun.spawn(['bun', 'run', 'build'])
+const build = await Bun.spawn(['bun', 'run', 'bunup'])
 
 const code = await build.exited
 
