@@ -1,0 +1,15 @@
+{
+  "name": "<PROJECT_NAME>",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "highx": "latest"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

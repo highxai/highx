@@ -37,6 +37,8 @@
 		"@commitlint/cli": "^19.8.1",
 		"@commitlint/config-conventional": "^19.8.1",
 		"@types/bun": "^1.2.17",
+		"@types/ink": "^2.0.3",
+		"@types/react": "^19.1.8",
 		"bumpp": "^10.2.0",
 		"bunup": "^0.8.51",
 		"husky": "^9.1.7",
@@ -60,6 +62,10 @@
 	},
 	"license": "MIT",
 	"dependencies": {
+		"gradient-string": "^3.0.0",
+		"ink": "^6.0.1",
+		"ink-select-input": "^6.2.0",
+		"react": "^19.1.0",
 		"zod": "^3.25.74"
 	}
 }

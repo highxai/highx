@@ -5,6 +5,7 @@
 		"moduleResolution": "bundler",
 		"esModuleInterop": true,
 		"strict": true,
+		"jsx": "react",
 		"skipLibCheck": true,
 		"declaration": true,
 		"isolatedDeclarations": false,

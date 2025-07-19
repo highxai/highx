@@ -1,11 +1,11 @@
-import { defineConfig } from 'bunup'
+import { defineConfig } from 'bunup';
 
 export default defineConfig({
-	entry: ['src/index.ts', 'src/cli.ts'],
+	entry: ['src/index.ts', 'src/cli.tsx'],
 	format: ['esm'],
 	dts: true,
 	minify: true,
 	minifySyntax: true,
 	clean: true,
 	splitting: true,
-})
+});
