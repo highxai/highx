@@ -1,17 +1,17 @@
-import { Glob } from 'bun';
+import { Glob } from 'bun'
 
-await Bun.spawn(['bun', 'run', 'test']);
-const build = await Bun.spawn(['bun', 'run', 'build']);
+await Bun.spawn(['bun', 'run', 'test'])
+const build = await Bun.spawn(['bun', 'run', 'build'])
 
-const code = await build.exited;
+const code = await build.exited
 
 if (code !== 0) {
-	console.error('Failed to build');
+	console.error('Failed to build')
 }
 
 // Copy assets
-const glob = new Glob('./src/templates/*');
+const glob = new Glob('./src/templates/*')
 for (const file of glob.scanSync('.')) {
-	const fileData = Bun.file(file);
-	Bun.write(file.replaceAll('src', 'dist'), fileData);
+	const fileData = Bun.file(file)
+	Bun.write(file.replaceAll('src', 'dist'), fileData)
 }

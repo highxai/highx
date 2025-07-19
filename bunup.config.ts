@@ -1,4 +1,4 @@
-import { defineConfig } from 'bunup';
+import { defineConfig } from 'bunup'
 
 export default defineConfig({
 	entry: ['src/index.ts', 'src/cli.tsx'],
@@ -8,4 +8,4 @@ export default defineConfig({
 	minifySyntax: true,
 	clean: true,
 	splitting: true,
-});
+})
