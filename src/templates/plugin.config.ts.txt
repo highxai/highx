@@ -1,0 +1,9 @@
+{
+	name: '<PLUGIN_NAME>',
+	modulePath: path.resolve(import.meta.dir, "plugins", "./<PLUGIN_NAME>.ts"),
+	hookOn: ['invoke'],
+	config: {
+	  level: 'info',
+	},
+	enabled: true,
+},

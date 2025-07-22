@@ -9,8 +9,8 @@
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"cli": {
-		"highx": "./dist/cli.js"
+	"bin": {
+		"highx": "./dist/cli/index.js"
 	},
 	"exports": {
 		".": {
