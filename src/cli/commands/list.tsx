@@ -113,9 +113,9 @@ const CommandList = (ctx: Context) => {
 	return (
 		<Box
 			flexDirection="column"
-			// padding={1}
-			// borderStyle="round"
-			// borderColor={status === 'error' ? 'redBright' : 'cyan'}
+			padding={1}
+			borderStyle="round"
+			borderColor={status === 'error' ? 'redBright' : 'cyan'}
 		>
 			<HighXLogo version />
 			<Box marginY={1} flexDirection="column">

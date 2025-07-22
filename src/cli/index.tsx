@@ -1,3 +1,5 @@
+#! /usr/bin/env bun
+
 import { Box, render, Text } from 'ink'
 import React, { type ReactNode } from 'react'
 import { commands } from './commands'
@@ -71,16 +73,7 @@ const App = (): ReactNode => {
 	}
 
 	const ctx = generateCtx(result)
-	return (
-		<Box
-			flexDirection="column"
-			padding={1}
-			borderStyle="round"
-			borderColor="cyan"
-		>
-			{command.cmp(ctx)}
-		</Box>
-	)
+	return command.cmp(ctx)
 }
 
 render(<App />)
