@@ -11,64 +11,90 @@ Please note that some features mentioned below are still in active development a
 - ⚡ **Lightning Fast Setup**: Go from idea to production in minutes with intuitive CLI and pre-built templates.
 - 🧩 **Modular Architecture**: Extend functionality with a robust plugin ecosystem for chat interfaces, RAG, and more.
 - 🛡️ **Enterprise-Grade Security**: SOC 2 Type II compliant with end-to-end encryption and audit trails.
-- 🛠️ **Developer-Friendly**: Full TypeScript support with intellisense, integrated testing, and debugging tools.
+- 🛠️ **Developer-Friendly**: Full TypeScript support with IntelliSense, integrated testing, and debugging tools.
 - 🌐 **AI-Native Design**: Built-in support for RAG, vector databases, and multi-model inference.
 - 📦 **Universal Integrations**: Connect to 50+ AI providers, databases, and services with ease.
 
 ## 📦 Installation
 
+Install HighX globally using Bun:
+
 ```bash
-npm install -g highx
+bun add -g highx
 ```
 
 ## 🧪 Quick Start
 
-Create a new AI project:
+Initialize a new HighX project:
 
 ```bash
-highx create my-ai-app
-cd my-ai-app
+highx init [project-name]
+cd [project-name]
 ```
 
-Add AI plugins:
+Create a new plugin or module:
 
 ```bash
-highx add chat-interface rag-engine
+highx new [plugin-name]
+```
+
+List all available plugins or modules:
+
+```bash
+highx list
+```
+
+View available commands and options:
+
+```bash
+highx help
+```
+
+Configure your project in `highx.config.ts`:
+
+```ts
+import type { ServerConfig } from "highx";
+import path from "node:path";
+
+// Example configuration for the server
+const config: ServerConfig = {
+  routes: [
+    {
+      path: "/(.*)",
+      method: "ALL",
+      handler: {
+        type: "proxy",
+        proxy: {
+          target: "http://localhost:3000",
+          rewrite: "^/api/(.*)$ /$1",
+        },
+      },
+    },
+    ...
+  ],
+
+  plugins: [
+    {
+      name: "aitrace",
+      modulePath: path.resolve(import.meta.dir, "plugins", "./aitrace.ts"),
+      hookOn: ["invoke"],
+      config: {
+        level: "info",
+      },
+      enabled: true,
+    },
+  ],
+};
+
+// Export the configuration
+export default config;
+
 ```
 
 Start development:
 
 ```bash
 highx dev
-```
-
-Configure your project in `highx.config.ts`:
-
-```ts
-import { defineConfig } from 'highx';
-
-export default defineConfig({
-	server: {
-		port: 8080,
-	},
-	ai: {
-		rag: {
-			enabled: true,
-			vectorDB: 'default',
-		},
-		models: [
-			{
-				provider: 'openai',
-				apiKey: process.env.OPENAI_API_KEY,
-			},
-			{
-				provider: 'anthropic',
-				apiKey: process.env.ANTHROPIC_API_KEY,
-			},
-		],
-	},
-	plugins: ['chat-interface', 'rag-engine'],
-});
 ```
 
 ## 🔌 Plugins
@@ -85,7 +111,7 @@ Explore the plugin marketplace at [https://highx.dev/plugins](https://highx.dev/
 
 ## 📚 Documentation
 
-Full documentation, API reference, and examples are available at [https://highx.dev](https://highx.dev/docs).
+Full documentation, API reference, and examples are available at [https://highx.dev/docs](https://highx.dev/docs).
 
 ## 🧑‍💻 Contributing
 
